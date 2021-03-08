@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="github.veikkoroc.cloud.dao.PaymentDao"> <!--映射哪个接口-->
+    
+    <insert id="create" parameterType="Payment" useGeneratedKeys="true" keyProperty="id">/*useGeneratedKeys = true 数据库插入成功返回1 */
+        insert into payment(serial) values(#{serial});
+    </insert>
+
+    <resultMap id="BaseResultMap" type="github.veikkoroc.cloud.pojo.Payment">
+        <id column="id" property="id" jdbcType="INTEGER"></id> <!--注意是 jdbcType 最后才发现原来是XML配置错误，某条属性的JdbcType我按照以前ibatis的习惯写的int，但是Mybatis不识别的。
+
+                                                               上Mybatis官网翻了翻才发现原来Mybatis的JdbcType全是大写，而且没有INT，只有INTEGER-->
+        <id column="serial" property="serial" jdbcType="VARCHAR"></id>
+    </resultMap>
+    <select id="getPaymentById" parameterType="int" resultMap="BaseResultMap">
+
+        select * from payment where id= #{id}; /*无语了，既然写成 {#id}*/
+
+    </select>
+</mapper>
